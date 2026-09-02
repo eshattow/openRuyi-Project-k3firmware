@@ -67,7 +67,10 @@ jobs:
 
       - name: Archive Firmware
         if: github.ref_type == 'tag'
-        run: tar -cJf bl-spacemit-k3-${{ github.ref_name }}.tar.xz -C dist .
+        run: |
+          tar -cJf bl-spacemit-k3-${{ github.ref_name }}.tar.xz \
+          --transform 's~^\.~bl-spacemit-k3-${{ github.ref_name }}~' \
+          -C dist .
 
       - name: Upload Firmware to Release (on Tag Push)
         if: github.ref_type == 'tag'
