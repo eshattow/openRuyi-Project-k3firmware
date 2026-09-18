@@ -87,10 +87,12 @@ toolchain: $(BARE_TOOLCHAIN_DIR)/bin/$(BARE_CROSS)gcc
 # ─── U-Boot ──────────────────────────────────────────────────────────
 
 u-boot: u-boot/.config linux-dtbs
+	sed -i -e 's%compatible = "ns16550";%compatible = "spacemit,k1-uart", "intel,xscale-uart", "ns16550";%' u-boot/arch/riscv/dts/k3.dtsi
 	$(MAKE) -C u-boot -j$(NPROC) CROSS_COMPILE=$(CROSS_COMPILE) \
 		LINUX_DTB_DIR=$(LINUX_DTB_DIR)
 
 u-boot/.config: | submodules
+	sed -i -e 's%compatible = "ns16550";%compatible = "spacemit,k1-uart", "intel,xscale-uart", "ns16550";%' u-boot/arch/riscv/dts/k3.dtsi
 	$(MAKE) -C u-boot -j$(NPROC) CROSS_COMPILE=$(CROSS_COMPILE) $(UBOOT_DEFCONFIG)
 
 # ─── Linux DTBs ──────────────────────────────────────────────────────
